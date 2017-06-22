@@ -45,6 +45,9 @@
         <q-drawer-link icon="spellcheck" :to="{path: '/drawermenu', exact: true}">
           Drawer
         </q-drawer-link>
+        <q-drawer-link icon="spellcheck" :to="{path: '/things', exact: true}">
+          Things
+        </q-drawer-link>
 
       </div>
     </q-drawer>

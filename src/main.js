@@ -8,12 +8,14 @@ require(`./themes/app.${__THEME}.styl`)
 // ==============================
 
 import Vue from 'vue'
+import VueResource from 'vue-resource'
 import Quasar from 'quasar'
 import router from './router'
 import map from './map' // eslint-disable-line
 import common from './common' // eslint-disable-line
 import 'animate.css/animate.min.css'
 
+Vue.use(VueResource)
 Vue.use(Quasar) // Install Quasar Framework
 
 // json filter is now not bundled with vue

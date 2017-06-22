@@ -33,6 +33,11 @@ export default new VueRouter({
           path: '/random-word',
           name: 'RandomWord',
           component: load('RandomWord')
+        },
+        {
+          path: '/things',
+          name: 'Things',
+          component: load('Things')
         }
       ]
     },
