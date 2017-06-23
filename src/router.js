@@ -30,12 +30,12 @@ export default new VueRouter({
       component: load('Drawermenu'),
       children: [
         {
-          path: '/random-word',
+          path: 'random-word',
           name: 'RandomWord',
           component: load('RandomWord')
         },
         {
-          path: '/things',
+          path: 'things',
           name: 'Things',
           component: load('Things')
         }

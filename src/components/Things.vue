@@ -1,5 +1,6 @@
 <template>
 	<div class="layout-view">
+      <router-view></router-view>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <a class="navbar-brand"><i class="glyphicon glyphicon-bullhorn"></i>I've seen things...</a>
@@ -27,7 +28,7 @@
                 <input type="date" class="form-control" placeholder="Fecha" v-model="thing.date">
               </div>
               <button class="btn btn-primary" id="add" v-on:click="addThing">Add</button>
-              <button class="btn btn-warning" id="updateb" v-on:click="updateThing">Update</button>
+              <button class="btn btn-warning" id="update" v-on:click="updateThing">Update</button>
               <h5>
                 <i class="glyphicon glyphicon-remove-circle" v-if="thing.error"></i>
                 <span style="color: red">{{ thing.error }}</span>
@@ -37,7 +38,7 @@
             <!-- CONTENT END -->
 	    </div>
 	    <div class="list-group">
-	        <a href="#" class="list-group-item" v-for="(thing, index) in things">
+	        <span class="list-group-item" v-for="(thing, index) in things">
 	          <h4 class="list-group-item-heading">
 	            <i class="glyphicon glyphicon-bullhorn"></i>
 	            {{ thing.name }}
@@ -51,8 +52,8 @@
 	          <p class="list-group-item-text" v-if="thing.description">{{ thing.description }}</p>
 	          <hr>
 	          <button class="btn btn-xs btn-danger" v-on:click="deleteThing(index)">Delete</button>
-	          <button class="btn btn-xs btn-warning" v-on:click="chargeThing(index)">Update</button>
-	        </a>
+            <button class="btn btn-warning" id="update" v-on:click="readThing(index)">Update</button>
+	        </span>
 	    </div>
 	</div>
 </template>
@@ -67,7 +68,8 @@ export default {
     }
   },
 
-  beforeCreate: function () {
+  // beforeCreate: function () {
+  created: function () {
     console.log('beforeCreated')
 
     var initialThings = [
@@ -93,11 +95,10 @@ export default {
     this.fetchThings()
   },
 
-  beforeRouteLeave: function (to, from, next) {
-    console.log('beforeRouteLeave')
-    // not executed when route stays the same, but only params change
-    next(false)
-  },
+  // beforeRouteLeave: function (to, from, next) {
+  //   console.log('beforeRouteLeave: ' + to)
+  //   next(false)
+  // },
 
   methods: {
     fetchThings: function () {
@@ -143,7 +144,7 @@ export default {
       // var initialThings = JSON.parse(localStorage['initialThings']) // eslint-disable-line
     },
 
-    chargeThing: function (index) {
+    readThing: function (index) {
       console.log('Charge index: ' + index)
       var initialThings = JSON.parse(localStorage['initialThings'])
       this.thing = initialThings[index]
@@ -168,9 +169,7 @@ export default {
       this.thing = []
     }
   }
-
 }
-console.log('done delete222')
 </script>
 
 <style>

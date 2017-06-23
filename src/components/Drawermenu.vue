@@ -36,7 +36,7 @@
         <q-drawer-link icon="spellcheck" :to="{path: '/Error', exact: true}">
           Error
         </q-drawer-link>
-        <q-drawer-link icon="spellcheck" :to="{path: '/random-word', exact: true}">
+        <q-drawer-link icon="spellcheck" :to="{path: '/drawermenu/random-word', exact: true}">
           Random
         </q-drawer-link>
         <q-drawer-link icon="spellcheck" :to="{path: '/menu', exact: true}">
@@ -45,7 +45,7 @@
         <q-drawer-link icon="spellcheck" :to="{path: '/drawermenu', exact: true}">
           Drawer
         </q-drawer-link>
-        <q-drawer-link icon="spellcheck" :to="{path: '/things', exact: true}">
+        <q-drawer-link icon="spellcheck" :to="{path: '/drawermenu/things', exact: true}">
           Things
         </q-drawer-link>
 
