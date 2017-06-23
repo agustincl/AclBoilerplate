@@ -1,12 +1,17 @@
 <template>
 	<div class="layout-view">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <a class="navbar-brand"><i class="glyphicon glyphicon-bullhorn"></i>I've seen things...</a>
+        </div>
+      </nav>
 	    <div class="panel-heading">
-	      <h3>Añade cosas</h3>
+	      <h3>Add a thing</h3>
 	    </div>
 	    <div class="panel-body">
             <!-- CONTENT START -->
             <div class="panel-heading">
-              <h3>Añade una cosa</h3>
+              <h3>Add a Thing</h3>
             </div>
             <div class="panel-body">
 
@@ -21,11 +26,8 @@
               <div class="form-group">
                 <input type="date" class="form-control" placeholder="Fecha" v-model="thing.date">
               </div>
-              <!--poner un flag para ocultar/desocultar el boton con v-if= -->
-              <button class="btn btn-primary" id="add" v-on:click="addThing">Añadir</button>
-              <button class="btn btn-warning" id="updateb" v-on:click="updateThing">Actualizar</button>
-              <button class="btn btn-info" v-on:click="clearStorage">Clear</button>
-
+              <button class="btn btn-primary" id="add" v-on:click="addThing">Add</button>
+              <button class="btn btn-warning" id="updateb" v-on:click="updateThing">Update</button>
               <h5>
                 <i class="glyphicon glyphicon-remove-circle" v-if="thing.error"></i>
                 <span style="color: red">{{ thing.error }}</span>
@@ -48,8 +50,8 @@
 
 	          <p class="list-group-item-text" v-if="thing.description">{{ thing.description }}</p>
 	          <hr>
-	          <button class="btn btn-xs btn-danger" v-on:click="deleteThing(index)">Borrar</button>
-	          <button class="btn btn-xs btn-warning" v-on:click="chargeThing(index)">Actualizar</button>
+	          <button class="btn btn-xs btn-danger" v-on:click="deleteThing(index)">Delete</button>
+	          <button class="btn btn-xs btn-warning" v-on:click="chargeThing(index)">Update</button>
 	        </a>
 	    </div>
 	</div>
@@ -58,29 +60,10 @@
 <script>
 export default {
   name: 'things',
-
   data: function () {
     return {
       thing: {name: '', description: '', date: ''},
       things: []
-    }
-  },
-
-  beforeCreate2: function () {
-    console.log('beforeCreate')
-
-    var storageThings = [
-      {
-        id: 0,
-        name: 'Cosa 0',
-        description: 'Descripcion 0.',
-        date: '2010-10-10'
-      }
-    ]
-
-    if (localStorage['storageThings'] == null || localStorage['storageThings'].length === 0) {
-      localStorage['storageThings'] = JSON.stringify(storageThings)
-      this.$set(self, 'things', localStorage['storageThings'])
     }
   },
 
@@ -109,33 +92,14 @@ export default {
     console.log('mounted')
     this.fetchThings()
   },
-  // Methods we want to use in our application are registered here
-  // methods: function() {
-  methods: {
-    // We dedicate a method to retrieving and setting some data
-    fetchThings2: function () {
-      var things = [  // eslint-disable-line
-        {
-          id: 1,
-          name: 'Cosa 1 estatica',
-          description: 'Descripcion 1.',
-          date: '2011-11-11'
-        },
-        {
-          id: 2,
-          name: 'Cosa 2 estatica',
-          description: 'Descripcion 2.',
-          date: '2012-12-12'
-        }
-      ]
 
-      var storageThings = JSON.parse(localStorage['storageThings'])  // en localStorage solo se puede guardar strings asi que se parsea
-      // $set is a convenience method provided by Vue that is similar to pushing
-      // data onto an array
-      // Asincrono
-      // this.$set(this, 'things', things);       // this = contenedor id="things", things = array inicializado en data
-      this.$set(this, 'things', storageThings) // muestra el array de localStorage
-    },
+  beforeRouteLeave: function (to, from, next) {
+    console.log('beforeRouteLeave')
+    // not executed when route stays the same, but only params change
+    next(false)
+  },
+
+  methods: {
     fetchThings: function () {
       var staticInitialThings = [ // eslint-disable-line
         {
@@ -151,28 +115,9 @@ export default {
           date: '2012-12-12'
         }
       ]
-
-      // $set is a convenience method provided by Vue that is similar to pushing
-      // data onto an array
       var initialThings = JSON.parse(localStorage['initialThings'])
-
-      // this.$set(this, 'things', staticInitialThings);
       this.$set(this, 'things', initialThings)
       console.log(initialThings)
-      // this.$set(this.path.to.object, propName, valueFromStore);
-      // this.$set(this.attendees, data.userToken, data);
-      // this.attendees.$set(data.userToken, data);
-    },
-
-    addThing2: function () {
-      if (this.thing.name) {
-        this.things.push(this.thing)
-        this.thing = {name: '', description: '', date: ''} // Inicializamos el objeto para la siguiente cosa y limpiar el formulario
-      }
-      else {
-        this.thing = {error: 'cubre el nombre'}
-      }
-      localStorage['storageThings'] = JSON.stringify(this.things)
     },
 
     addThing: function () {
@@ -180,67 +125,52 @@ export default {
         this.things.push(this.thing)
         this.thing = {name: '', description: '', date: ''}
       }
+      else {
+        this.thing = {error: 'name required!'}
+      }
       localStorage['initialThings'] = JSON.stringify(this.things)
-    },
-
-    deleteThing2: function (index) {
-      console.log('Borrando elemento: ' + index)
-      this.$delete(this.things, index)
-      // var storageThings = JSON.parse(localStorage['storageThings']) // eslint-disable-line
-      localStorage['storageThings'] = JSON.stringify(this.things)
     },
 
     deleteThing: function (index) {
       console.log('Delete index:' + index)
       if (confirm('Are you sure you want to delete this thing?')) {
-        // $remove is a Vue convenience method similar to splice
-        // this.$delete(this.things, index)
-        // this.things.$remove(index)
-        console.log('index:1' + self.$children)
-        console.log('index:2' + this.$children)
-        console.log('index:3' + this.things[index])
-        console.log('index:4' + this.things)
-        console.log('index:5' + index)
-        // console.log(self.$children[index])
-        // console.log(things.indexOf(index))
-        // this.$destroy(this.things, index)
-        this.things[index].this.$destroy()
+        this.things.splice(index, 1)
+        localStorage['initialThings'] = JSON.stringify(this.things)
       }
-      var initialThings = JSON.parse(localStorage['initialThings']) // eslint-disable-line
-      localStorage['initialThings'] = JSON.stringify(this.things)
+      else {
+        console.log('delete error or cancelled')
+      }
+      // var initialThings = JSON.parse(localStorage['initialThings']) // eslint-disable-line
     },
 
     chargeThing: function (index) {
-      var storageThings = JSON.parse(localStorage['storageThings'])
-      this.thing = storageThings[index]
+      console.log('Charge index: ' + index)
+      var initialThings = JSON.parse(localStorage['initialThings'])
+      this.thing = initialThings[index]
+      this.thing.id = index
     },
 
     updateThing: function () {
-      var storageThings = JSON.parse(localStorage['storageThings'])
+      console.log('Update')
+      var initialThings = JSON.parse(localStorage['initialThings'])
+      var id = this.thing.id
       var name = this.thing.name
       var description = this.thing.description
 
-      storageThings.forEach(function (v, i) {
-        if (storageThings[i].name === name) {
-          storageThings[i].description = description
+      initialThings.forEach(function (v, i) {
+        if (i === id) {
+          initialThings[i].name = name
+          initialThings[i].description = description
         }
       })
-      this.things = storageThings
-      localStorage['storageThings'] = JSON.stringify(storageThings)
+      this.things = initialThings
+      localStorage['initialThings'] = JSON.stringify(initialThings)
       this.thing = []
-    },
-
-    clearStorage: function () {
-      this.things = []
-      localStorage.clear()
-    },
-
-    registerThing: function () {
-      console.log('Registro: ')
     }
   }
 
 }
+console.log('done delete222')
 </script>
 
 <style>

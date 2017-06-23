@@ -38,7 +38,7 @@ export default {
           /* eslint-enable no-alert, no-console */
         })
 
-      this.$router.push('/')
+      // this.$router.push('/')
     }
   }
 }
